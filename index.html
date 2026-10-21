@@ -1,0 +1,3188 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>202610_UTELS 淺層折射震測探究實驗室 | 北市大實習</title>
+  <meta name="description" content="臺北市立大學圖書館後方淺層折射震測實習：儀器介紹、物理原理、288道真實資料分析與科學建模探究心得。">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ==========================================================================
+       MINIMALIST SCI-FI DESIGN SYSTEM (簡約科幻遙測風格)
+       ========================================================================== */
+    :root {
+      --bg-deep: #060911;
+      --bg-space: #090e1c;
+      --bg-card: rgba(12, 19, 36, 0.78);
+      --bg-card-hover: rgba(17, 28, 54, 0.9);
+
+      --tech-cyan: #00f0ff;
+      --tech-cyan-dim: rgba(0, 240, 255, 0.12);
+      --tech-cyan-glow: rgba(0, 240, 255, 0.4);
+
+      --tech-blue: #38bdf8;
+      --tech-emerald: #10b981;
+      --tech-emerald-dim: rgba(16, 185, 129, 0.15);
+      --tech-amber: #f59e0b;
+      --tech-amber-dim: rgba(245, 158, 11, 0.15);
+      --tech-rose: #f43f5e;
+      --tech-rose-dim: rgba(244, 63, 94, 0.15);
+
+      --border-tech: rgba(0, 240, 255, 0.18);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+
+      --font-heading: 'Chakra Petch', sans-serif;
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+
+      --transition-fast: 0.18s ease;
+      --transition-normal: 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Reset & Base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      background-color: var(--bg-deep);
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--text-primary);
+      background-color: var(--bg-deep);
+      line-height: 1.65;
+      overflow-x: hidden;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Subtle Grid Background & Atmospheric Glow */
+    .bg-grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(to right, rgba(0, 240, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 240, 255, 0.035) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .ambient-glow {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(140px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    .glow-cyan {
+      width: 500px;
+      height: 500px;
+      top: -100px;
+      right: -50px;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.22), transparent 70%);
+    }
+
+    .glow-blue {
+      width: 600px;
+      height: 600px;
+      bottom: 10%;
+      left: -150px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.18), transparent 70%);
+    }
+
+    h1, h2, h3, h4, .brand-title, .section-heading, .p-title, .card-title, .m-title, .sim-title {
+      font-family: var(--font-heading);
+      letter-spacing: 0.03em;
+      font-weight: 700;
+    }
+
+    .neon-text {
+      color: var(--tech-cyan);
+      text-shadow: 0 0 16px rgba(0, 240, 255, 0.45);
+    }
+
+    .section-container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .page-section {
+      padding: 100px 0;
+      border-bottom: 1px solid rgba(0, 240, 255, 0.08);
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-head {
+      margin-bottom: 48px;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      color: var(--tech-cyan);
+      background: var(--tech-cyan-dim);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      padding: 3px 10px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 14px;
+    }
+
+    .section-heading {
+      font-size: 2.2rem;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+      line-height: 1.25;
+    }
+
+    .section-lead {
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+      max-width: 820px;
+      line-height: 1.7;
+    }
+
+    /* Top Nav Bar */
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 68px;
+      background: rgba(6, 9, 17, 0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-tech);
+      z-index: 100;
+    }
+
+    .nav-container {
+      max-width: 1280px;
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-zone {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pulse-indicator {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--tech-cyan);
+      box-shadow: 0 0 10px var(--tech-cyan);
+      animation: pulseBeacon 2.2s infinite ease-in-out;
+    }
+
+    @keyframes pulseBeacon {
+      0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 10px var(--tech-cyan); }
+      50% { opacity: 0.4; transform: scale(0.85); box-shadow: 0 0 4px var(--tech-cyan); }
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-sub {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--tech-cyan);
+      letter-spacing: 0.18em;
+    }
+
+    .brand-title {
+      font-size: 0.96rem;
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav-item {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+      padding: 6px 0;
+    }
+
+    .nav-num {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--tech-cyan);
+      opacity: 0.75;
+    }
+
+    .nav-item:hover, .nav-item.active {
+      color: var(--tech-cyan);
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--tech-cyan);
+      box-shadow: 0 0 8px var(--tech-cyan);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .telemetry-badge {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--tech-emerald);
+      background: var(--tech-emerald-dim);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tag-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--tech-emerald);
+      border-radius: 50%;
+      box-shadow: 0 0 6px var(--tech-emerald);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding-top: 150px;
+      padding-bottom: 90px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .tech-kicker {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--tech-cyan);
+      letter-spacing: 0.15em;
+      margin-bottom: 20px;
+    }
+
+    .kicker-line {
+      width: 32px;
+      height: 2px;
+      background: var(--tech-cyan);
+      box-shadow: 0 0 8px var(--tech-cyan);
+    }
+
+    .hero-title {
+      font-size: 3.2rem;
+      line-height: 1.18;
+      margin-bottom: 22px;
+    }
+
+    .hero-desc {
+      font-size: 1.12rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 32px;
+    }
+
+    .hero-meta-strip {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-bottom: 36px;
+    }
+
+    .meta-pill {
+      background: var(--bg-card);
+      border: 1px solid var(--border-tech);
+      border-radius: var(--radius-md);
+      padding: 10px 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pill-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--tech-cyan);
+      letter-spacing: 0.05em;
+    }
+
+    .pill-val {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-top: 2px;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-tech {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 26px;
+      border-radius: var(--radius-md);
+      font-family: var(--font-heading);
+      font-size: 0.98rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .btn-tech.primary {
+      background: var(--tech-cyan);
+      color: #030712;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
+      border: 1px solid var(--tech-cyan);
+    }
+
+    .btn-tech.primary:hover {
+      background: #33f3ff;
+      box-shadow: 0 0 28px rgba(0, 240, 255, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .btn-tech.ghost {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-primary);
+      border: 1px solid var(--border-tech);
+    }
+
+    .btn-tech.ghost:hover {
+      border-color: var(--tech-cyan);
+      color: var(--tech-cyan);
+      transform: translateY(-2px);
+    }
+
+    .btn-arr {
+      width: 18px;
+      height: 18px;
+      transition: var(--transition-fast);
+    }
+
+    .btn-tech:hover .btn-arr {
+      transform: translateX(4px);
+    }
+
+    /* Hero HUD Panel */
+    .hud-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-tech);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(20px);
+      padding: 24px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hud-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--tech-cyan), transparent);
+    }
+
+    .hud-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 18px;
+    }
+
+    .hud-title {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--tech-cyan);
+      letter-spacing: 0.12em;
+    }
+
+    .hud-status {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--tech-emerald);
+    }
+
+    .telemetry-display {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .telemetry-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.88rem;
+      padding: 6px 0;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+    }
+
+    .telemetry-row.highlight {
+      border-bottom: none;
+      background: rgba(0, 240, 255, 0.06);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+    }
+
+    .t-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .t-value {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .telemetry-row.highlight .t-value {
+      color: var(--tech-cyan);
+    }
+
+    .hud-wireframe {
+      margin-top: 24px;
+      padding: 20px 10px 10px;
+      position: relative;
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: var(--radius-sm);
+    }
+
+    .wire-line {
+      height: 2px;
+      background: linear-gradient(90deg, var(--tech-cyan), var(--tech-blue));
+      width: 100%;
+      position: relative;
+      margin: 12px 0 8px;
+    }
+
+    .wire-point {
+      position: absolute;
+      top: 10px;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .wire-point::after {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--tech-cyan);
+      box-shadow: 0 0 6px var(--tech-cyan);
+      margin-top: 3px;
+    }
+
+    .wire-point span {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-secondary);
+    }
+
+    .wire-sub {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      text-align: center;
+      letter-spacing: 0.1em;
+      margin-top: 10px;
+    }
+
+    /* 1. 儀器卡片 */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .tech-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-tech);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      backdrop-filter: blur(14px);
+      transition: var(--transition-normal);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tech-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--tech-cyan);
+      box-shadow: 0 12px 30px rgba(0, 240, 255, 0.15);
+    }
+
+    .card-media {
+      position: relative;
+      width: 100%;
+      height: 190px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .card-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .tech-card:hover .card-media img {
+      transform: scale(1.05);
+    }
+
+    .media-tag {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      background: rgba(6, 9, 17, 0.85);
+      color: var(--tech-cyan);
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+
+    .card-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .model-id {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--tech-cyan);
+    }
+
+    .channel-pill {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 18px;
+      flex-grow: 1;
+    }
+
+    .specs-mini {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 16px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .specs-mini div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .specs-mini span {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    .specs-mini strong {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--tech-cyan);
+      margin-top: 2px;
+    }
+
+    .btn-inspect {
+      background: rgba(0, 240, 255, 0.08);
+      border: 1px solid var(--border-tech);
+      color: var(--tech-cyan);
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-heading);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      text-align: center;
+    }
+
+    .btn-inspect:hover {
+      background: var(--tech-cyan);
+      color: #030712;
+      box-shadow: 0 0 14px rgba(0, 240, 255, 0.35);
+    }
+
+    /* Field Photo Carousel Strip */
+    .photo-strip-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-tech);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      backdrop-filter: blur(14px);
+    }
+
+    .strip-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .strip-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      color: var(--text-primary);
+    }
+
+    .strip-icon {
+      color: var(--tech-cyan);
+    }
+
+    .strip-hint {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--tech-cyan);
+      opacity: 0.85;
+    }
+
+    .photo-thumbnail-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 14px;
+    }
+
+    .thumb-item {
+      position: relative;
+      height: 96px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .thumb-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .thumb-lbl {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(6, 9, 17, 0.85);
+      font-size: 0.68rem;
+      text-align: center;
+      padding: 3px 0;
+      color: var(--text-primary);
+    }
+
+    .thumb-item:hover {
+      border-color: var(--tech-cyan);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0, 240, 255, 0.25);
+    }
+
+    .thumb-item:hover img {
+      transform: scale(1.1);
+    }
+
+    /* 2. 原理卡片與即時模擬器 */
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-bottom: 48px;
+    }
+
+    .principle-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-tech);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      backdrop-filter: blur(14px);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .principle-card.highlight-card {
+      border-color: var(--tech-cyan);
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.08), rgba(12, 19, 36, 0.85));
+    }
+
+    .p-num {
+      font-family: var(--font-mono);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--tech-cyan);
+      margin-bottom: 10px;
+      opacity: 0.8;
+    }
+
+    .p-title {
+      font-size: 1.2rem;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .p-text {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    .formula-box {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      background: rgba(0, 0, 0, 0.45);
+      border-left: 2px solid var(--tech-cyan);
+      padding: 6px 10px;
+      margin: 10px 0;
+      color: var(--tech-cyan);
+    }
+
+    /* Simulator Container */
+    .sim-wrapper {
+      background: var(--bg-card);
+      border: 1px solid var(--border-tech);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .sim-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .sim-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--tech-cyan);
+      letter-spacing: 0.12em;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .sim-title {
+      font-size: 1.4rem;
+      color: var(--text-primary);
+    }
+
+    .sim-readout {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .r-badge {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border-tech);
+      border-radius: var(--radius-sm);
+      padding: 6px 12px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+
+    .r-k {
+      color: var(--text-secondary);
+    }
+
+    .r-v {
+      color: var(--tech-cyan);
+      font-weight: 700;
+      margin-left: 4px;
+    }
+
+    .sim-canvas-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .canvas-block {
+      background: #040711;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      position: relative;
+    }
+
+    .canvas-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .c-title {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.05em;
+    }
+
+    .c-legend {
+      font-size: 0.72rem;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .leg-item {
+      display: inline-block;
+      width: 12px;
+      height: 3px;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+
+    .leg-direct { background: #38bdf8; }
+    .leg-refr { background: #00f0ff; }
+    .leg-refl { background: #c084fc; border-top: 1px dashed #c084fc; }
+
+    .color-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 4px;
+    }
+
+    .c-cyan { background: var(--tech-cyan); }
+    .c-amber { background: var(--tech-amber); }
+
+    canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: var(--radius-sm);
+    }
+
+    .sim-controls-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 20px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 18px;
+    }
+
+    .ctrl-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .ctrl-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+
+    .ctrl-val {
+      font-family: var(--font-mono);
+      color: var(--tech-cyan);
+      font-weight: 700;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      background: #1e293b;
+      border-radius: 3px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--tech-cyan);
+      box-shadow: 0 0 10px var(--tech-cyan);
+      cursor: pointer;
+      transition: transform 0.1s ease;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    .sim-status-footer {
+      background: rgba(0, 240, 255, 0.06);
+      border-left: 3px solid var(--tech-cyan);
+      padding: 12px 16px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-ico {
+      color: var(--tech-cyan);
+      font-size: 1.1rem;
+    }
+
+    .status-text {
+      font-size: 0.9rem;
+      color: var(--text-primary);
+    }
+
+    .status-text strong {
+      color: var(--tech-cyan);
+    }
+
+    /* 3. 資料分析 */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-tech);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      backdrop-filter: blur(12px);
+      text-align: center;
+    }
+
+    .kpi-card.highlight-kpi {
+      border-color: var(--tech-amber);
+      background: rgba(245, 158, 11, 0.06);
+    }
+
+    .kpi-num {
+      font-family: var(--font-heading);
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--tech-cyan);
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .kpi-card.highlight-kpi .kpi-num {
+      color: var(--tech-amber);
+      text-shadow: 0 0 14px rgba(245, 158, 11, 0.4);
+    }
+
+    .kpi-label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .kpi-sub {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    /* Findings Box & Tabs */
+    .findings-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-tech);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      backdrop-filter: blur(14px);
+      margin-bottom: 48px;
+    }
+
+    .findings-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: rgba(4, 7, 17, 0.8);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .f-tab {
+      background: transparent;
+      border: none;
+      padding: 16px 12px;
+      color: var(--text-secondary);
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: var(--transition-fast);
+      border-bottom: 2px solid transparent;
+    }
+
+    .f-tab:hover {
+      color: var(--tech-cyan);
+      background: rgba(0, 240, 255, 0.04);
+    }
+
+    .f-tab.active {
+      color: var(--tech-cyan);
+      background: rgba(0, 240, 255, 0.08);
+      border-bottom-color: var(--tech-cyan);
+    }
+
+    .tab-badge {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      opacity: 0.8;
+    }
+
+    .findings-content {
+      padding: 32px;
+    }
+
+    .finding-panel {
+      display: none;
+    }
+
+    .finding-panel.active {
+      display: block;
+    }
+
+    .finding-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.05fr;
+      gap: 36px;
+      align-items: center;
+    }
+
+    .finding-media {
+      position: relative;
+      background: #02050c;
+      border: 1px solid var(--border-tech);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      text-align: center;
+    }
+
+    .clickable-chart {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-sm);
+      cursor: zoom-in;
+      transition: transform 0.25s ease;
+    }
+
+    .clickable-chart:hover {
+      transform: scale(1.02);
+    }
+
+    .media-hint {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--tech-cyan);
+      margin-top: 8px;
+    }
+
+    .finding-header {
+      margin-bottom: 14px;
+    }
+
+    .tag-status {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 8px;
+    }
+
+    .tag-status.warning { background: var(--tech-amber-dim); color: var(--tech-amber); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .tag-status.primary { background: var(--tech-cyan-dim); color: var(--tech-cyan); border: 1px solid rgba(0, 240, 255, 0.3); }
+    .tag-status.danger { background: var(--tech-rose-dim); color: var(--tech-rose); border: 1px solid rgba(244, 63, 94, 0.3); }
+    .tag-status.success { background: var(--tech-emerald-dim); color: var(--tech-emerald); border: 1px solid rgba(16, 185, 129, 0.3); }
+
+    .finding-text h3 {
+      font-size: 1.45rem;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .finding-text p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+
+    .callout-box {
+      background: rgba(0, 0, 0, 0.4);
+      border-left: 3px solid var(--tech-cyan);
+      padding: 12px 16px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-size: 0.88rem;
+      color: var(--text-primary);
+      margin-top: 16px;
+    }
+
+    .callout-box.alert-border {
+      border-left-color: var(--tech-rose);
+      background: rgba(244, 63, 94, 0.06);
+    }
+
+    /* Sensitivity Table */
+    .sensitivity-table-wrap {
+      overflow-x: auto;
+      text-align: left;
+    }
+
+    .s-table-title {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--tech-cyan);
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .telemetry-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+
+    .telemetry-table th {
+      background: rgba(255, 255, 255, 0.05);
+      font-family: var(--font-mono);
+      color: var(--text-secondary);
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border-subtle);
+      font-weight: 500;
+    }
+
+    .telemetry-table td {
+      padding: 7px 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      font-family: var(--font-mono);
+    }
+
+    .row-unstable {
+      background: rgba(244, 63, 94, 0.06);
+    }
+
+    .row-stable {
+      background: rgba(16, 185, 129, 0.06);
+    }
+
+    .badge-danger {
+      color: var(--tech-rose);
+      font-weight: 600;
+    }
+
+    .badge-success {
+      color: var(--tech-emerald);
+      font-weight: 600;
+    }
+
+    .s-table-caption {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    /* Reciprocity Card */
+    .recip-viz-card {
+      padding: 24px;
+    }
+
+    .recip-icon {
+      font-size: 3rem;
+      color: var(--tech-emerald);
+      margin-bottom: 10px;
+    }
+
+    .recip-headline {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .recip-formula {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      color: var(--tech-emerald);
+      background: rgba(16, 185, 129, 0.1);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .recip-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 12px;
+      border-radius: var(--radius-sm);
+    }
+
+    .recip-stats span {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      display: block;
+    }
+
+    .recip-stats strong {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      color: var(--text-primary);
+    }
+
+    .recip-note {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* 12-Shot Matrix Inspector */
+    .shot-matrix-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-tech);
+      border-radius: var(--radius-lg);
+      padding: 26px;
+      backdrop-filter: blur(14px);
+    }
+
+    .matrix-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .m-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.15rem;
+      color: var(--text-primary);
+    }
+
+    .m-icon {
+      color: var(--tech-cyan);
+    }
+
+    .m-sub {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .shot-buttons-row {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .btn-shot {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px 4px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: var(--transition-fast);
+    }
+
+    .btn-shot:hover {
+      border-color: var(--tech-cyan);
+      color: var(--tech-cyan);
+    }
+
+    .btn-shot.active {
+      background: var(--tech-cyan-dim);
+      border-color: var(--tech-cyan);
+      color: var(--tech-cyan);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+    }
+
+    .shot-id {
+      font-family: var(--font-heading);
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .shot-pos {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+    }
+
+    .shot-detail-card {
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid var(--border-tech);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .sd-meta-col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sd-meta-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.88rem;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .sd-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .sd-val {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .sd-info-col h4 {
+      font-size: 1.15rem;
+      color: var(--tech-cyan);
+      margin-bottom: 8px;
+    }
+
+    .sd-info-col p {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* 4. 心得感想 */
+    .reflections-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .reflect-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-tech);
+      border-radius: var(--radius-lg);
+      padding: 26px;
+      backdrop-filter: blur(14px);
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition-normal);
+    }
+
+    .reflect-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--tech-cyan);
+    }
+
+    .reflect-card.highlight-reflect {
+      border-color: var(--tech-rose);
+      background: linear-gradient(135deg, rgba(244, 63, 94, 0.06), rgba(12, 19, 36, 0.85));
+    }
+
+    .r-badge-mini {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--tech-cyan);
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+
+    .r-badge-mini.alert {
+      color: var(--tech-rose);
+    }
+
+    .r-title {
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+      line-height: 1.35;
+    }
+
+    .r-content {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .r-quote {
+      font-style: italic;
+      font-size: 0.88rem;
+      color: var(--tech-cyan);
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 14px;
+    }
+
+    .r-quote.highlight-q {
+      color: var(--tech-rose);
+    }
+
+    /* CER Framework Block */
+    .cer-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border-tech);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      backdrop-filter: blur(16px);
+    }
+
+    .cer-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .cer-tag {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--tech-cyan);
+      letter-spacing: 0.15em;
+      margin-bottom: 6px;
+    }
+
+    .cer-title {
+      font-size: 1.6rem;
+      color: var(--text-primary);
+    }
+
+    .cer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .cer-item {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cer-badge {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      display: inline-block;
+      margin-bottom: 14px;
+      align-self: flex-start;
+    }
+
+    .c-badge { background: var(--tech-cyan-dim); color: var(--tech-cyan); border: 1px solid rgba(0, 240, 255, 0.3); }
+    .e-badge { background: var(--tech-emerald-dim); color: var(--tech-emerald); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .r-badge { background: var(--tech-amber-dim); color: var(--tech-amber); border: 1px solid rgba(245, 158, 11, 0.3); }
+
+    .cer-desc {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .cer-desc strong {
+      color: var(--text-primary);
+    }
+
+    /* Lightbox Modal */
+    .photo-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .photo-modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-backdrop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(3, 6, 14, 0.88);
+      backdrop-filter: blur(12px);
+    }
+
+    .modal-window {
+      position: relative;
+      max-width: 860px;
+      width: 90%;
+      background: #090e1c;
+      border: 1px solid var(--tech-cyan);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 0 50px rgba(0, 240, 255, 0.35);
+      overflow: hidden;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-tech-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 18px;
+      background: #050812;
+      border-bottom: 1px solid var(--border-tech);
+    }
+
+    .m-badge {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--tech-cyan);
+      letter-spacing: 0.12em;
+    }
+
+    .btn-close-modal {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      padding: 4px;
+    }
+
+    .btn-close-modal:hover {
+      color: var(--tech-rose);
+    }
+
+    .modal-image-wrap {
+      width: 100%;
+      max-height: 65vh;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .modal-image-wrap img {
+      max-width: 100%;
+      max-height: 65vh;
+      object-fit: contain;
+    }
+
+    .modal-caption-wrap {
+      padding: 16px 20px;
+      background: #090e1c;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .modal-caption-text {
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    .page-footer {
+      border-top: 1px solid var(--border-tech);
+      background: #040710;
+      padding: 36px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .footer-logo {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      color: var(--tech-cyan);
+      margin-right: 12px;
+    }
+
+    .btn-scroll-top {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--tech-cyan);
+      text-decoration: none;
+      border: 1px solid var(--border-tech);
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      transition: var(--transition-fast);
+    }
+
+    .btn-scroll-top:hover {
+      background: var(--tech-cyan);
+      color: #030712;
+    }
+
+    /* Responsive Queries */
+    @media (max-width: 992px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-title { font-size: 2.6rem; }
+      .sim-canvas-container { grid-template-columns: 1fr; }
+      .finding-grid { grid-template-columns: 1fr; }
+      .shot-buttons-row { grid-template-columns: repeat(6, 1fr); }
+      .cer-grid { grid-template-columns: 1fr; }
+      .shot-detail-card { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero-title { font-size: 2.1rem; }
+      .hero-meta-strip { grid-template-columns: 1fr; }
+      .findings-tabs { grid-template-columns: repeat(2, 1fr); }
+      .footer-container { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+
+<body class="sci-fi-theme">
+  <!-- 背景微光與格線 -->
+  <div class="bg-grid-overlay" aria-hidden="true"></div>
+  <div class="ambient-glow glow-cyan" aria-hidden="true"></div>
+  <div class="ambient-glow glow-blue" aria-hidden="true"></div>
+
+  <!-- 頂部遙測導覽列 -->
+  <header class="top-nav">
+    <div class="nav-container">
+      <div class="brand-zone">
+        <div class="pulse-indicator" title="系統連線正常"></div>
+        <div class="brand-text">
+          <span class="brand-sub">SEISMIC INQUIRY TERMINAL</span>
+          <span class="brand-title">UTELS-202610 // 地球物理實習</span>
+        </div>
+      </div>
+
+      <nav class="nav-links" id="mainNav">
+        <a href="#instruments" class="nav-item"><span class="nav-num">01</span>儀器介紹</a>
+        <a href="#principles" class="nav-item"><span class="nav-num">02</span>原理介紹</a>
+        <a href="#analysis" class="nav-item"><span class="nav-num">03</span>資料分析</a>
+        <a href="#reflection" class="nav-item"><span class="nav-num">04</span>心得感想</a>
+      </nav>
+
+      <div class="nav-actions">
+        <span class="telemetry-badge"><span class="tag-dot"></span>SYS.ONLINE</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero 區塊 -->
+  <section class="hero-section" id="hero">
+    <div class="section-container hero-grid">
+      <div class="hero-content">
+        <div class="tech-kicker">
+          <span class="kicker-line"></span>
+          <span>GEOPHYSICAL EXPLORATION & SCIENTIFIC MODELING</span>
+        </div>
+        <h1 class="hero-title">
+          看不見的地下<br>
+          <span class="neon-text">我們如何精準探測？</span>
+        </h1>
+        <p class="hero-desc">
+          臺北市立大學圖書館後方・淺層震測野外實習成果。透過 24 通道動圈檢波器、12 個震源點與 288 道實測彈性波數據，從硬體部署、波場傳播幾何、演算法極限到雙層地質構造的科學論證歷程。
+        </p>
+
+        <div class="hero-meta-strip">
+          <div class="meta-pill">
+            <span class="pill-label">測線名稱</span>
+            <span class="pill-val">202610_UTELS</span>
+          </div>
+          <div class="meta-pill">
+            <span class="pill-label">測線長度</span>
+            <span class="pill-val">46 公尺 (24 Channels)</span>
+          </div>
+          <div class="meta-pill">
+            <span class="pill-label">取樣頻率</span>
+            <span class="pill-val">4 kHz (0.25 ms)</span>
+          </div>
+          <div class="meta-pill">
+            <span class="pill-label">震測道數</span>
+            <span class="pill-val">288 Traces (0 死道)</span>
+          </div>
+        </div>
+
+        <div class="hero-cta-group">
+          <a href="#instruments" class="btn-tech primary">
+            <span>開始儀器巡禮</span>
+            <svg class="btn-arr" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                clip-rule="evenodd" />
+            </svg>
+          </a>
+          <a href="#sim-box" class="btn-tech ghost">
+            <span>啟動原理模擬器</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-status-panel">
+        <div class="hud-box">
+          <div class="hud-header">
+            <span class="hud-title">REAL-TIME TELEMETRY MATRIX</span>
+            <span class="hud-status">STATUS: LOCKED</span>
+          </div>
+          <div class="telemetry-display">
+            <div class="telemetry-row">
+              <span class="t-label">SURVEY DATE</span>
+              <span class="t-value">2026-10-07 // 晴・日間</span>
+            </div>
+            <div class="telemetry-row">
+              <span class="t-label">LOCATION</span>
+              <span class="t-value">北市大圖書館後方 (靠近承德路四段)</span>
+            </div>
+            <div class="telemetry-row">
+              <span class="t-label">GEOPHONE SPACING</span>
+              <span class="t-value">2.0 m (x = 0 … 46 m)</span>
+            </div>
+            <div class="telemetry-row">
+              <span class="t-label">SOURCE SPACING</span>
+              <span class="t-value">4.0 m (12 炮, x = 0 … 44 m)</span>
+            </div>
+            <div class="telemetry-row">
+              <span class="t-label">RECORD LENGTH</span>
+              <span class="t-value">0.50 s (2000 Samples)</span>
+            </div>
+            <div class="telemetry-row highlight">
+              <span class="t-label">VALIDATED SNR</span>
+              <span class="t-value">206 道 (≥25dB, 72%)</span>
+            </div>
+          </div>
+          <div class="hud-wireframe">
+            <div class="wire-point" style="left:0%;"><span>S1:0m</span></div>
+            <div class="wire-point" style="left:26%;"><span>S4:12m</span></div>
+            <div class="wire-point" style="left:52%;"><span>S7:24m</span></div>
+            <div class="wire-point" style="left:78%;"><span>S10:36m</span></div>
+            <div class="wire-point" style="left:95%;"><span>S12:44m</span></div>
+            <div class="wire-line"></div>
+            <div class="wire-sub">GEOPHONE RECEIVER ARRAY (0m - 46m)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. 儀器介紹 (Instruments) -->
+  <section class="page-section" id="instruments">
+    <div class="section-container">
+      <div class="section-head">
+        <div class="section-tag">MODULE // 01</div>
+        <h2 class="section-heading">野外觀測儀器系統</h2>
+        <p class="section-lead">地表下的微動聲波雷達。全套震測系統涵蓋「震源觸發」、「彈性波接收」、「多通道傳輸」與「高速數位採樣記錄」四大核心模組。</p>
+      </div>
+
+      <!-- Instrument Cards Grid -->
+      <div class="cards-grid">
+        <!-- Card 1 -->
+        <article class="tech-card">
+          <div class="card-media">
+            <img src="docs/seismic-inquiry/assets/images/1000050452.jpg" alt="DAS-1 專業震測記錄儀" loading="lazy">
+            <span class="media-tag">RECORDER // A/D SYSTEM</span>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="model-id">GEOMETRICS DAS-1 / SEISMODULES</span>
+              <span class="channel-pill">24 CHANNELS</span>
+            </div>
+            <h3 class="card-title">DAS-1 專業震測記錄儀</h3>
+            <p class="card-desc">
+              系統核心資料擷取中樞。具備 24 獨立類比數位轉換模組，取樣率高達 0.25 ms（4 kHz），每道記錄 2000 個微秒級振幅取樣點。現場以專用通訊電纜連接野外筆電，由車用 12V 鉛酸電瓶獨立供電，嚴格阻絕市電交流雜訊干擾。
+            </p>
+            <div class="specs-mini">
+              <div><span>取樣率</span><strong>0.25 ms</strong></div>
+              <div><span>紀錄長度</span><strong>0.50 s</strong></div>
+              <div><span>增益控制</span><strong>Fixed 36 dB</strong></div>
+            </div>
+            <button class="btn-inspect"
+              onclick="openPhotoModal('docs/seismic-inquiry/assets/images/1000050452.jpg', 'DAS-1 專業震測主機：負責接收 24 通道微伏訊號並進行精密類比/數位轉換，以高頻 4000 Hz 同步紀錄。', '儀器主機 // 系統整合')">
+              檢視實體照片與解說
+            </button>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="tech-card">
+          <div class="card-media">
+            <img src="docs/seismic-inquiry/assets/images/1000050453.jpg" alt="重型鐵鎚、衝擊鐵板與絕對時間 Trigger 感測線" loading="lazy">
+            <span class="media-tag">SOURCE // TIMING TRIGGER</span>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="model-id">SLEDGEHAMMER & TRIGGER</span>
+              <span class="channel-pill">t = 0.0000 s</span>
+            </div>
+            <h3 class="card-title">人工震源與絕對時序 Trigger</h3>
+            <p class="card-desc">
+              產生探測彈性波的衝擊能量源。大鐵鎚敲擊高剛性鑄鐵底板，將動能轉化為向下輻射之壓縮波（P波）與表面波。鎚柄附有壓電式振動開關（Trigger Switch），撞擊瞬間送出電氣觸發訊號，定義精準 t=0 絕對時間基準。
+            </p>
+            <div class="specs-mini">
+              <div><span>震源形式</span><strong>鐵鎚 + 鐵板</strong></div>
+              <div><span>時序精度</span><strong>微秒級觸發</strong></div>
+              <div><span>垂直疊加</span><strong>3 ~ 15 次/炮</strong></div>
+            </div>
+            <button class="btn-inspect"
+              onclick="openPhotoModal('docs/seismic-inquiry/assets/images/1000050453.jpg', '榔頭、鐵板與 trigger 訊號線：擊打瞬間送出電氣脈衝定義 t = 0，使多道走時量測具備絕對時間基準。', '震源模組 // 敲擊與 Trigger')">
+              檢視實體照片與解說
+            </button>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="tech-card">
+          <div class="card-media">
+            <img src="docs/seismic-inquiry/assets/images/1000050457.jpg" alt="動圈式垂直速度型受波器 (Geophone)" loading="lazy">
+            <span class="media-tag">SENSOR // GROUND COUPLING</span>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="model-id">VERTICAL VELOCITY GEOPHONE</span>
+              <span class="channel-pill">24 UNITS</span>
+            </div>
+            <h3 class="card-title">動圈式垂直速度型受波器</h3>
+            <p class="card-desc">
+              地表微振動感測器。內部懸吊磁鐵與動圈結構，依法拉第電磁感應原理，將地表垂直方向質點振動速度轉換為連續微伏（μV）級電壓訊號。金屬尖樁垂直緊密插入土中（Ground Coupling），確保地表微動完全傳遞至感測心臟。
+            </p>
+            <div class="specs-mini">
+              <div><span>布設間距</span><strong>2.0 公尺</strong></div>
+              <div><span>排列範圍</span><strong>0 ~ 46 公尺</strong></div>
+              <div><span>感應方向</span><strong>垂直分量 (Z)</strong></div>
+            </div>
+            <button class="btn-inspect"
+              onclick="openPhotoModal('docs/seismic-inquiry/assets/images/1000050457.jpg', '教師示範將受波器尖端垂直插實於土壤中，良好的地表耦合（Ground Coupling）是杜絕空隙諧振與訊號失真的首要關鍵。', '感測模組 // 受波器地表耦合')">
+              檢視實體照片與解說
+            </button>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="tech-card">
+          <div class="card-media">
+            <img src="docs/seismic-inquiry/assets/images/1000050462.jpg" alt="多芯抗干擾傳輸導線與測站空間幾何" loading="lazy">
+            <span class="media-tag">TELEMETRY // SPATIAL GEOMETRY</span>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="model-id">24-CH TAKEOUT SPREAD CABLE</span>
+              <span class="channel-pill">SPREAD 46 m</span>
+            </div>
+            <h3 class="card-title">多芯傳輸導線與測站幾何</h3>
+            <p class="card-desc">
+              連接 24 支受波器與主機的抗扭雙絞屏蔽訊號電纜。每隔 2 公尺設有專用雙針防水 Takeout 接口。搭配百米精密皮尺沿測線由北向南精準標定位置，確保通道編號（CH 1~24）與空間幾何座標（0~46m）嚴格對應（Data Provenance）。
+            </p>
+            <div class="specs-mini">
+              <div><span>總線長度</span><strong>50 公尺</strong></div>
+              <div><span>接口間距</span><strong>2.0 公尺</strong></div>
+              <div><span>走線方位</span><strong>北向南測線</strong></div>
+            </div>
+            <button class="btn-inspect"
+              onclick="openPhotoModal('docs/seismic-inquiry/assets/images/1000050462.jpg', '學生沿皮尺展開訊號線，將各通道接頭放置於各受波器旁，嚴格檢查通道對應，防止資料來源幾何混淆。', '配線模組 // 測線幾何布設')">
+              檢視實體照片與解說
+            </button>
+          </div>
+        </article>
+      </div>
+
+      <!-- Field Photo Carousel Strip -->
+      <div class="photo-strip-box">
+        <div class="strip-header">
+          <div class="strip-title">
+            <span class="strip-icon">⬡</span>
+            <span>野外探究現場實景縮影 (10 個作業階段精選)</span>
+          </div>
+          <span class="strip-hint">點擊縮圖檢視高解析照片與專業說明</span>
+        </div>
+        <div class="photo-thumbnail-row">
+          <div class="thumb-item"
+            onclick="openPhotoModal('docs/seismic-inquiry/assets/images/1000050442.jpg', '階段 01：教師在現場向全體實習生說明震測原理、波場概念與整套 DAS-1 探測架構。', '現場導引 // 探究起點')">
+            <img src="docs/seismic-inquiry/assets/images/1000050442.jpg" alt="現場說明" loading="lazy">
+            <span class="thumb-lbl">01 觀念講解</span>
+          </div>
+          <div class="thumb-item"
+            onclick="openPhotoModal('docs/seismic-inquiry/assets/images/1000050455.jpg', '階段 03：使用高精度皮尺在草地樹林間拉出 46 公尺基線，建立空間座標參考系。', '測量基準 // 皮尺定距')">
+            <img src="docs/seismic-inquiry/assets/images/1000050455.jpg" alt="皮尺量距" loading="lazy">
+            <span class="thumb-lbl">03 皮尺定距</span>
+          </div>
+          <div class="thumb-item"
+            onclick="openPhotoModal('docs/seismic-inquiry/assets/images/1000050464.jpg', '階段 04：兩人一組，嚴謹核對受波器金屬接頭與多芯纜線 Takeout 的編號與導通狀態。', '配線核驗 // 訊號迴路')">
+            <img src="docs/seismic-inquiry/assets/images/1000050464.jpg" alt="確認接頭" loading="lazy">
+            <span class="thumb-lbl">04 線路連接</span>
+          </div>
+          <div class="thumb-item"
+            onclick="openPhotoModal('docs/seismic-inquiry/assets/images/1000050468.jpg', '階段 05：現場完整觀測系統就緒。震測儀、12V 電瓶、Trigger 線、多芯纜線與通訊筆電完全就位。', '系統就緒 // 量測總成')">
+            <img src="docs/seismic-inquiry/assets/images/1000050468.jpg" alt="系統就位" loading="lazy">
+            <span class="thumb-lbl">05 系統總成</span>
+          </div>
+          <div class="thumb-item"
+            onclick="openPhotoModal('docs/seismic-inquiry/assets/images/1000050473.jpg', '階段 06：示範以大鐵鎚垂直全力敲擊鐵板產生震源，同點進行多次打擊以利波形疊加。', '震源激發 // 垂直疊加')">
+            <img src="docs/seismic-inquiry/assets/images/1000050473.jpg" alt="鐵鎚敲擊" loading="lazy">
+            <span class="thumb-lbl">06 鐵鎚擊發</span>
+          </div>
+          <div class="thumb-item"
+            onclick="openPhotoModal('docs/seismic-inquiry/assets/images/1000050482.jpg', '階段 07：敲擊後全體圍繞筆電螢幕，檢視 24 通道波形多軌紀錄，尋找第一道抵達的初達波（First Arrival）。', '波形初判 // 即時品管')">
+            <img src="docs/seismic-inquiry/assets/images/1000050482.jpg" alt="螢幕判讀" loading="lazy">
+            <span class="thumb-lbl">07 波形判讀</span>
+          </div>
+          <div class="thumb-item"
+            onclick="openPhotoModal('docs/seismic-inquiry/assets/images/1000050491.jpg', '階段 08：學生親自持鎚施打第一炮（Shot 1, x = 0m），體會力道均勻度對觸發與訊噪比的決定性影響。', '實習操作 // 第一炮量測')">
+            <img src="docs/seismic-inquiry/assets/images/1000050491.jpg" alt="學生操作" loading="lazy">
+            <span class="thumb-lbl">08 學生擊鎚</span>
+          </div>
+          <div class="thumb-item"
+            onclick="openPhotoModal('docs/seismic-inquiry/assets/images/1000050539.jpg', '階段 10：完成全線 12 炮施測後，全組拆收器材、盤點受波器與線材，回復場地原貌。', '收束復原 // 實驗圓滿')">
+            <img src="docs/seismic-inquiry/assets/images/1000050539.jpg" alt="拆收清點" loading="lazy">
+            <span class="thumb-lbl">10 場地復原</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 原理介紹 (Principles & Theory) -->
+  <section class="page-section" id="principles">
+    <div class="section-container">
+      <div class="section-head">
+        <div class="section-tag">MODULE // 02</div>
+        <h2 class="section-heading">物理原理與科學建模</h2>
+        <p class="section-lead">地球物理的核心不是直接「看見」，而是運用彈性波傳播的物理規律建立可驗證的地下模型。「走得最短，不一定最早到」是折射震測最反直覺而精妙的真理。</p>
+      </div>
+
+      <!-- Principles Concept Cards -->
+      <div class="principles-grid">
+        <div class="principle-card">
+          <div class="p-num">01</div>
+          <h3 class="p-title">司乃耳定律與臨界折射</h3>
+          <p class="p-text">
+            當震波從低速上層（速度 $V_1$）傳播至高速下層（速度 $V_2 > V_1$）界面時，遵循司乃耳定律：
+            <span class="formula-box">$\frac{\sin \theta_1}{V_1} = \frac{\sin \theta_2}{V_2}$</span>
+            當入射角達到臨界角 $\theta_c = \arcsin(V_1 / V_2)$ 時，折射角 $\theta_2 = 90^\circ$。震波沿介面以高速 $V_2$ 傳播，並持續依惠更斯原理向上層輻射折射頭波（Head Wave）。
+          </p>
+        </div>
+
+        <div class="principle-card highlight-card">
+          <div class="p-num">02</div>
+          <h3 class="p-title">走得最短，不一定最早到</h3>
+          <p class="p-text">
+            <strong>直達波（Direct Wave）</strong>沿地表直線傳播，走時為 $t = x / V_1$（斜率 $1/V_1$）。<br>
+            <strong>臨界折射波（Head Wave）</strong>雖然向下走穿上層再斜折回地表，路徑較長，但由於下層 $V_2 \gg V_1$ 速度極快，在跨越<strong>交叉距離（$x_c$）</strong>後，折射波將反超直達波最先到達受波器！
+          </p>
+        </div>
+
+        <div class="principle-card">
+          <div class="p-num">03</div>
+          <h3 class="p-title">截距時間法 (Intercept-Time)</h3>
+          <p class="p-text">
+            折射波之走時方程為：
+            <span class="formula-box">$t = \frac{x}{V_2} + T_i$</span>
+            其中 $T_i$ 為走時直線在時間軸上的截距。透過截距時間可精準反演界面深度 $h$：
+            <span class="formula-box">$h = \frac{T_i}{2} \cdot \frac{V_1 V_2}{\sqrt{V_2^2 - V_1^2}} = \frac{x_c}{2}\sqrt{\frac{V_2 - V_1}{V_2 + V_1}}$</span>
+          </p>
+        </div>
+
+        <div class="principle-card">
+          <div class="p-num">04</div>
+          <h3 class="p-title">垂直疊加抑制噪訊 (Stacking)</h3>
+          <p class="p-text">
+            野外同一炮點連續敲擊 $N$ 次（實習中為 3 ~ 15 次）。地層真訊號具有同相位相關性，振幅放大 $N$ 倍；環境隨機雜訊相位不一，能量僅呈 $\sqrt{N}$ 增長。理論訊噪比提升：
+            <span class="formula-box">$\text{SNR}_{\text{boost}} = \sqrt{N} \text{ 倍（或 } +10 \log_{10} N \text{ dB）}$</span>
+            15 次敲擊使微弱深層訊號得以從環境雜訊中脫穎而出。
+          </p>
+        </div>
+      </div>
+
+      <!-- Interactive Raypath & Travel-time Simulator -->
+      <div class="sim-wrapper" id="sim-box">
+        <div class="sim-header">
+          <div class="sim-title-group">
+            <span class="sim-tag">INTERACTIVE LAB</span>
+            <h3 class="sim-title">雙層介質波前折射與走時曲線即時模擬器</h3>
+          </div>
+          <div class="sim-readout">
+            <div class="r-badge"><span class="r-k">臨界角 θc:</span> <span class="r-v" id="lblCritAngle">--°</span></div>
+            <div class="r-badge"><span class="r-k">交叉支距 xc:</span> <span class="r-v" id="lblCrossover">-- m</span></div>
+            <div class="r-badge"><span class="r-k">截距時間 Ti:</span> <span class="r-v" id="lblIntercept">-- ms</span></div>
+          </div>
+        </div>
+
+        <div class="sim-canvas-container">
+          <div class="canvas-block">
+            <div class="canvas-top-bar">
+              <span class="c-title">地下射線傳播剖面 (Raypath Cross-Section)</span>
+              <span class="c-legend">
+                <span class="leg-item leg-direct"></span>直達波
+                <span class="leg-item leg-refr"></span>折射頭波
+                <span class="leg-item leg-refl"></span>反射波
+              </span>
+            </div>
+            <canvas id="raypathCanvas" width="700" height="260"></canvas>
+          </div>
+
+          <div class="canvas-block">
+            <div class="canvas-top-bar">
+              <span class="c-title">走時曲線圖 (t–x Travel-Time Curve)</span>
+              <span class="c-legend">
+                <span class="leg-txt"><span class="color-dot c-cyan"></span>斜率 1/V₁</span>
+                <span class="leg-txt"><span class="color-dot c-amber"></span>斜率 1/V₂</span>
+              </span>
+            </div>
+            <canvas id="travelTimeCanvas" width="700" height="260"></canvas>
+          </div>
+        </div>
+
+        <!-- Simulator Controls -->
+        <div class="sim-controls-bar">
+          <div class="ctrl-group">
+            <div class="ctrl-label">
+              <span>上層速度 V₁ (表層風化土)</span>
+              <span class="ctrl-val" id="valV1">350 m/s</span>
+            </div>
+            <input type="range" id="sliderV1" min="200" max="600" step="10" value="350">
+          </div>
+
+          <div class="ctrl-group">
+            <div class="ctrl-label">
+              <span>下層速度 V₂ (堅實土石層)</span>
+              <span class="ctrl-val" id="valV2">900 m/s</span>
+            </div>
+            <input type="range" id="sliderV2" min="650" max="1800" step="25" value="900">
+          </div>
+
+          <div class="ctrl-group">
+            <div class="ctrl-label">
+              <span>界面深度 h (岩土交界深度)</span>
+              <span class="ctrl-val" id="valDepth">3.0 m</span>
+            </div>
+            <input type="range" id="sliderDepth" min="1.0" max="6.5" step="0.2" value="3.0">
+          </div>
+
+          <div class="ctrl-group">
+            <div class="ctrl-label">
+              <span>檢測受波點 Offset x</span>
+              <span class="ctrl-val" id="valOffset">18.0 m</span>
+            </div>
+            <input type="range" id="sliderOffset" min="2.0" max="44.0" step="2.0" value="18.0">
+          </div>
+        </div>
+
+        <div class="sim-status-footer" id="simOutputSummary">
+          <span class="status-ico">ⓘ</span>
+          <span class="status-text">
+            於支距 18.0 m 處：直達波到時 <strong>51.4 ms</strong>，折射波到時 <strong>34.8 ms</strong>。折射波比直達波早到 <strong>16.6 ms</strong>，初達波判定為【折射波】。
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 資料分析 (Data Analysis) -->
+  <section class="page-section" id="analysis">
+    <div class="section-container">
+      <div class="section-head">
+        <div class="section-tag">MODULE // 03</div>
+        <h2 class="section-heading">實測資料分析與探究突破</h2>
+        <p class="section-lead">
+          由 `202610_UTELS.sgy` 與 ALIAS 原始檔解析之 288 道實測震波數據。資料驗證揭露了「30m 訊噪極限」、「單層模型破滅」以及震撼的「消失的 V₁ 演算法盲區」。
+        </p>
+      </div>
+
+      <!-- Analysis KPI Row -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-num">288</div>
+          <div class="kpi-label">總紀錄道數</div>
+          <div class="kpi-sub">12 炮 × 24 道・無任何死道</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-num">206</div>
+          <div class="kpi-label">有效可用道數</div>
+          <div class="kpi-sub">SNR ≥ 25 dB (占全線 72%)</div>
+        </div>
+        <div class="kpi-card highlight-kpi">
+          <div class="kpi-num">~30m</div>
+          <div class="kpi-label">訊噪比有效支距上限</div>
+          <div class="kpi-sub">>30m 後初達波沒入都市背景雜訊</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-num">1.5 ms</div>
+          <div class="kpi-label">互換時間中位差</div>
+          <div class="kpi-sub">35 組互換配對・驗證高精度時序</div>
+        </div>
+      </div>
+
+      <!-- Scientific Findings Accordion / Tabs -->
+      <div class="findings-box">
+        <div class="findings-tabs">
+          <button class="f-tab active" data-target="finding-snr">
+            <span class="tab-badge">FINDING 01</span>
+            <span>30m 訊噪比極限</span>
+          </button>
+          <button class="f-tab" data-target="finding-tx">
+            <span class="tab-badge">FINDING 02</span>
+            <span>單層擬合之破滅</span>
+          </button>
+          <button class="f-tab" data-target="finding-v1">
+            <span class="tab-badge">FINDING 03</span>
+            <span>消失的 V₁ 與穩定度</span>
+          </button>
+          <button class="f-tab" data-target="finding-recip">
+            <span class="tab-badge">FINDING 04</span>
+            <span>互換時間物理檢核</span>
+          </button>
+        </div>
+
+        <div class="findings-content">
+          <!-- Tab 1: SNR -->
+          <div class="finding-panel active" id="finding-snr">
+            <div class="finding-grid">
+              <div class="finding-media">
+                <img src="docs/seismic-inquiry/assets/charts/chart1_snr_vs_offset.png" alt="訊噪比隨支距變化圖"
+                  onclick="openPhotoModal('docs/seismic-inquiry/assets/charts/chart1_snr_vs_offset.png', '圖一：訊噪比隨支距變化分佈。近支距高達 50-60 dB，但超過 30 公尺後急遽衰退至 12 dB 警戒線以下，初達波被背景微動淹沒。', '資料分析 // 訊噪比 vs 支距')"
+                  class="clickable-chart">
+                <span class="media-hint">點擊圖表檢視高解析大圖</span>
+              </div>
+              <div class="finding-text">
+                <div class="finding-header">
+                  <span class="tag-status warning">PHYSICAL LIMITATION</span>
+                  <h3>發現一：震源能量衰減與 30 公尺有效界限</h3>
+                </div>
+                <p>
+                  每一個點代表一道真實實測記錄。現場以人力鐵鎚敲擊鐵板，能量有限。在近支距（0–10 m），由於幾何擴散效應尚弱，訊噪比高達 45 ~ 62 dB，初達波訊號極為清晰鋒銳。
+                </p>
+                <p>
+                  然而隨著支距增加，幾何擴散與淺層未固結土壤對高頻波動的吸收衰減劇烈發酵；<strong>一旦支距超過約 30 公尺，中位 SNR 即跌破 12 dB 可用門檻</strong>。
+                </p>
+                <div class="callout-box">
+                  <strong>科學啟示：</strong> 這就是為何本次實習的可靠反演必須倚靠測線中段（8 ~ 14 m），而非強行引用 40 m 遠端充滿不確定性的雜訊道。
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 2: t-x -->
+          <div class="finding-panel" id="finding-tx">
+            <div class="finding-grid">
+              <div class="finding-media">
+                <img src="docs/seismic-inquiry/assets/charts/chart2_firstarrival_tx.png" alt="初達波走時與支距關係圖"
+                  onclick="openPhotoModal('docs/seismic-inquiry/assets/charts/chart2_firstarrival_tx.png', '圖二：初達波走時 (t-x) 擬合與折角現象。單一直線擬合之殘差均方根高達 11.1 ms，證實地層非單一均勻體，具顯著雙層速度結構。', '資料分析 // t-x 走時曲線與擬合')"
+                  class="clickable-chart">
+                <span class="media-hint">點擊圖表檢視高解析大圖</span>
+              </div>
+              <div class="finding-text">
+                <div class="finding-header">
+                  <span class="tag-status primary">MODEL REJECTION</span>
+                  <h3>發現二：初達波視速度轉折與單層模型推翻</h3>
+                </div>
+                <p>
+                  彙整所有 SNR ≥ 30 dB 之可靠初達波挑選點繪製於綜合 t–x 走時圖。若強行假設地下為均勻單層介質進行單一直線擬合，得出視速度約 <strong>470 m/s</strong>，但殘差 RMS 高達 <strong>11.1 ms</strong>！
+                </p>
+                <p>
+                  走時點在近距離呈陡峭斜率，在 8 公尺後迅速變平緩。單一直線模型根本無法解釋高達 11.1 ms 的系統性殘差，<strong>在統計學與物理學上徹底否決了單層地質假說</strong>，為建立「雙層速度結構」提供了最堅實的經驗證據。
+                </p>
+                <div class="callout-box">
+                  <strong>速度對比：</strong> 支距 8–14 m 呈現高達 <strong>533 ~ 578 m/s</strong> 的高速折射特徵，明顯高於表層近支距速度。
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 3: V1 Sensitivity -->
+          <div class="finding-panel" id="finding-v1">
+            <div class="finding-grid">
+              <div class="finding-media">
+                <!-- Sensitivity Table Card -->
+                <div class="sensitivity-table-wrap">
+                  <div class="s-table-title">視窗下限掃描穩定度矩陣 (160–300 m/s)</div>
+                  <table class="telemetry-table">
+                    <thead>
+                      <tr>
+                        <th>支距</th>
+                        <th>160</th>
+                        <th>200</th>
+                        <th>250</th>
+                        <th>300</th>
+                        <th>變動幅度</th>
+                        <th>判定狀態</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="row-unstable">
+                        <td>2 m</td><td>286</td><td>333</td><td>381</td><td>533</td><td>67%</td><td><span class="badge-danger">不穩定 (人為視窗)</span></td>
+                      </tr>
+                      <tr class="row-unstable">
+                        <td>4 m</td><td>296</td><td>381</td><td>508</td><td>525</td><td>55%</td><td><span class="badge-danger">不穩定 (人為視窗)</span></td>
+                      </tr>
+                      <tr class="row-unstable">
+                        <td>6 m</td><td>333</td><td>414</td><td>774</td><td>774</td><td>88%</td><td><span class="badge-danger">不穩定 (人為視窗)</span></td>
+                      </tr>
+                      <tr class="row-stable">
+                        <td>8 m</td><td>547</td><td>547</td><td>547</td><td>557</td><td>4%</td><td><span class="badge-success">物理穩定</span></td>
+                      </tr>
+                      <tr class="row-stable">
+                        <td>10 m</td><td>533</td><td>533</td><td>556</td><td>556</td><td>4%</td><td><span class="badge-success">物理穩定</span></td>
+                      </tr>
+                      <tr class="row-stable">
+                        <td>12 m</td><td>578</td><td>589</td><td>589</td><td>589</td><td>2%</td><td><span class="badge-success">物理穩定</span></td>
+                      </tr>
+                      <tr class="row-stable">
+                        <td>14 m</td><td>569</td><td>571</td><td>602</td><td>619</td><td>9%</td><td><span class="badge-success">物理穩定</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="s-table-caption">數值單位為視速度 (m/s)；來源：sensitivity.csv</div>
+                </div>
+              </div>
+              <div class="finding-text">
+                <div class="finding-header">
+                  <span class="tag-status danger">CRITICAL DISCOVERY</span>
+                  <h3>發現三：演算法盲區 —— 消失的 V₁ 震撼反思</h3>
+                </div>
+                <p>
+                  在進行穩定度檢驗前，表面故事看似美好：「近支距視速度約 300 m/s，隨後升至 600 m/s，完美代表兩層結構」。
+                </p>
+                <p>
+                  但當我們微調自動挑選程式之搜尋視窗（160 ~ 300 m/s）時，真相震撼浮現：<strong>近支距（2–6 m）的視速度隨參數劇烈跳動達 55% ~ 88%！</strong>
+                </p>
+                <p>
+                  震源在近地表激發出能量極龐大的<strong>表面波（Ground Roll，視速度僅約 160 m/s）</strong>。自動演算法在極窄的時間窗內誤把表面波峰值當作初達波，產生的「300 m/s」完全是挑選視窗邊界逼出來的數值假象，而非地層真理！
+                </p>
+                <div class="callout-box alert-border">
+                  <strong>嚴正科學決策：</strong> 唯有 8–14 m 的 533–578 m/s 視速度（變動僅 2~9%）是客觀真實。因此本次分析<strong>刻意不自動輸出假 V₁ 與深度</strong>，堅持需由人眼逐道人工挑選，展現最高規格的科學誠信。
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 4: Reciprocity -->
+          <div class="finding-panel" id="finding-recip">
+            <div class="finding-grid">
+              <div class="finding-media">
+                <div class="recip-viz-card">
+                  <div class="recip-icon">⇄</div>
+                  <div class="recip-headline">波場傳播互換性定理</div>
+                  <div class="recip-formula">t(A → B) ≡ t(B → A)</div>
+                  <div class="recip-stats">
+                    <div><span>互換測勘配對</span><strong>35 組</strong></div>
+                    <div><span>中位走時差</span><strong>1.5 ms</strong></div>
+                    <div><span>系統取樣間距</span><strong>0.25 ms</strong></div>
+                  </div>
+                  <p class="recip-note">1.5 ms 走時差僅相當於 6 個取樣點之微小偏差，完全落在環境隨機微震動與鎚擊接觸時間誤差之可容許容限內。</p>
+                </div>
+              </div>
+              <div class="finding-text">
+                <div class="finding-header">
+                  <span class="tag-status success">SYSTEM VERIFIED</span>
+                  <h3>發現四：互換時間檢驗證明觀測系統極致自洽</h3>
+                </div>
+                <p>
+                  依據彈性波動方程式之格林函數對稱性（Green's Function Reciprocity）：當在 A 點激發、B 點接收之總走時，在物理上必須完全等於在 B 點激發、A 點接收之走時。
+                </p>
+                <p>
+                  全測線 12 炮布設中，共有 35 組幾何完全對稱的互換點對。驗證結果顯示<strong>兩向互換時間之中位差僅僅只有 1.5 ms</strong>！
+                </p>
+                <p>
+                  這項檢驗無可辯駁地證實了：野外施工中 24 支受波器座標標定、皮尺等距量測、Trigger 觸發零點計時與通道接線完全自洽，排除硬體時間飄移或幾何標記錯位的人為過失。
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive 12-Shot Matrix Inspector -->
+      <div class="shot-matrix-box">
+        <div class="matrix-head">
+          <div class="m-title">
+            <span class="m-icon">✦</span>
+            <span>12 炮施測遙測矩陣 (Shot Point Telemetry Inspector)</span>
+          </div>
+          <span class="m-sub">點選任一炮點（Shot 1 ~ 12）即時調閱現場疊加次數、幾何支距與施測細節</span>
+        </div>
+
+        <div class="shot-buttons-row" id="shotBtnContainer">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="shot-detail-card" id="shotDetailCard">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 心得感想 (Reflections) -->
+  <section class="page-section" id="reflection">
+    <div class="section-container">
+      <div class="section-head">
+        <div class="section-tag">MODULE // 04</div>
+        <h2 class="section-heading">探究心得與科學反思</h2>
+        <p class="section-lead">從炙熱陽光下的掄鎚敲擊，到面對螢幕演算法假象的當頭棒喝。這場實習淬鍊出的不僅是地質數據，更是面對未知的嚴謹科學精神。</p>
+      </div>
+
+      <!-- Reflection Cards Grid -->
+      <div class="reflections-grid">
+        <div class="reflect-card">
+          <div class="r-badge-mini">EPISTEMOLOGY // 認識論</div>
+          <h3 class="r-title">一、科學不是「看見」，而是「以證據建立模型」</h3>
+          <p class="r-content">
+            地表之下深埋於泥土與柏油之中，我們不可能將地球切開肉眼觀看。地球物理的迷人之處，正是透過在地表製造聲響、測量微秒級的時間延遲，並運用波動方程式反演不可見的地下層位。
+          </p>
+          <div class="r-quote">
+            「我們測量的是時間與電壓，但我們看見的是地層的呼吸與邊界。」
+          </div>
+        </div>
+
+        <div class="reflect-card">
+          <div class="r-badge-mini">FIELDWORK // 野外實證</div>
+          <h3 class="r-title">二、野外汗水與數據品質的物理連動</h3>
+          <p class="r-content">
+            20 人的實習團隊，在豔陽下反覆掄起重鎚敲擊 15 次，不是機械式的枯燥勞動，而是為了將微弱的震波同相疊加、將環境雜訊統計相消。每一支檢波器插得夠不夠深、鐵板接地穩不穩，都會在波形螢幕上顯露無遺——好資料從來不是運氣，而是嚴謹與汗水的結晶。
+          </p>
+          <div class="r-quote">
+            「野外工作每一毫米的疏忽，都會在室內分析時化為無法挽回的噪聲。」
+          </div>
+        </div>
+
+        <div class="reflect-card highlight-reflect">
+          <div class="r-badge-mini alert">CRITICAL THINKING // 批判思維</div>
+          <h3 class="r-title">三、拒絕盲信軟體：最大的科學教訓</h3>
+          <p class="r-content">
+            自動挑選程式看似光鮮迅速，若無穩定度檢驗，我們就會把「視窗邊界產生的假 300 m/s」當成真實地質寫入報告。知道程式「何時會失效」、敢於質疑軟體輸出並進行人工複核，遠比「按下一鍵分析按鈕」重要百倍。批判性審視數據邊界，正是專業科學家無可取代的靈魂。
+          </p>
+          <div class="r-quote highlight-q">
+            「演算法能提供效率，但唯有人的批判思考才能守護真理。」
+          </div>
+        </div>
+
+        <div class="reflect-card">
+          <div class="r-badge-mini">FUTURE // 實務應用</div>
+          <h3 class="r-title">四、從校園測線邁向工程防災大視野</h3>
+          <p class="r-content">
+            本次 46 公尺測線雖然只是一次校園探索，但其背後的原理直接連結著國家重大建設：斷層活動性調查、捷運與高鐵基樁岩盤深度探查、山崩邊坡滑動面定位與地下水文探測。掌握震測思維，就是掌握了穿透地表洞察地質危機的鑰匙。
+          </p>
+          <div class="r-quote">
+            「在校園奠定的震測基石，將是未來守護地工安全的重要盾牌。」
+          </div>
+        </div>
+      </div>
+
+      <!-- CER Framework Block -->
+      <div class="cer-block">
+        <div class="cer-header">
+          <div class="cer-tag">CER SCIENTIFIC INQUIRY FRAMEWORK</div>
+          <h3 class="cer-title">本實習科學主張之 CER 嚴密論證鏈</h3>
+        </div>
+        <div class="cer-grid">
+          <div class="cer-item">
+            <div class="cer-badge c-badge">CLAIM // 主張</div>
+            <p class="cer-desc">
+              北市大圖書館後方地下<strong>絕非單一均勻介質</strong>，而是至少由低速表土層與高速折射層（視速度約 533–578 m/s）構成的雙層地質構造。
+            </p>
+          </div>
+          <div class="cer-item">
+            <div class="cer-badge e-badge">EVIDENCE // 證據</div>
+            <p class="cer-desc">
+              單一直線擬合之走時殘差 RMS 高達 <strong>11.1 ms</strong>，在統計上顯著失真；8–14 m 穩定區間初達波視速度穩定維持於 <strong>533 ~ 578 m/s</strong>，走時斜率明顯折轉。
+            </p>
+          </div>
+          <div class="cer-item">
+            <div class="cer-badge r-badge">REASONING // 推理</div>
+            <p class="cer-desc">
+              依司乃耳定律與臨界折射理論，走時曲線斜率代表 $1/V$。當波傳播跨越交叉距離後轉由下層高速折射波主導，斜率轉折即為波場轉換與地質分層之必然物理表徵。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Lightbox Modal -->
+  <div class="photo-modal" id="photoModal" aria-hidden="true" role="dialog">
+    <div class="modal-backdrop" onclick="closePhotoModal()"></div>
+    <div class="modal-window">
+      <div class="modal-tech-bar">
+        <span class="m-badge" id="modalTag">INSPECTION HUD</span>
+        <button class="btn-close-modal" onclick="closePhotoModal()" aria-label="關閉視窗">✕</button>
+      </div>
+      <div class="modal-image-wrap">
+        <img src="" id="modalImg" alt="實習現場檢視影像">
+      </div>
+      <div class="modal-caption-wrap">
+        <p class="modal-caption-text" id="modalCaption"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="page-footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <span class="footer-logo">UTELS-202610</span>
+        <span class="footer-text">國立中央大學 SSS 團隊 × 臺北市立大學地質實習</span>
+      </div>
+      <div class="footer-center">
+        <span>測線：202610_UTELS (46m) │ 施測日期：2026-10-07</span>
+      </div>
+      <div class="footer-right">
+        <a href="#hero" class="btn-scroll-top">▲ 回到頂端</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 內嵌全套互動腳本 (Zero Dependency, Self-Contained) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      initNavTracking();
+      initSimulator();
+      initShotMatrix();
+      initFindingsTabs();
+    });
+
+    /* 1. 導覽列滾動監聽 */
+    function initNavTracking() {
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-item');
+
+      window.addEventListener('scroll', () => {
+        let currentId = '';
+        const scrollPos = window.scrollY + 200;
+
+        sections.forEach(sec => {
+          const top = sec.offsetTop;
+          const height = sec.offsetHeight;
+          if (scrollPos >= top && scrollPos < top + height) {
+            currentId = sec.getAttribute('id');
+          }
+        });
+
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === `#${currentId}`) {
+            link.classList.add('active');
+          }
+        });
+      }, { passive: true });
+    }
+
+    /* 2. 雙層波場與走時曲線即時模擬器 (HTML5 Canvas) */
+    function initSimulator() {
+      const sliderV1 = document.getElementById('sliderV1');
+      const sliderV2 = document.getElementById('sliderV2');
+      const sliderDepth = document.getElementById('sliderDepth');
+      const sliderOffset = document.getElementById('sliderOffset');
+
+      const valV1 = document.getElementById('valV1');
+      const valV2 = document.getElementById('valV2');
+      const valDepth = document.getElementById('valDepth');
+      const valOffset = document.getElementById('valOffset');
+
+      const lblCritAngle = document.getElementById('lblCritAngle');
+      const lblCrossover = document.getElementById('lblCrossover');
+      const lblIntercept = document.getElementById('lblIntercept');
+      const simOutputSummary = document.getElementById('simOutputSummary');
+
+      const rayCanvas = document.getElementById('raypathCanvas');
+      const ttCanvas = document.getElementById('travelTimeCanvas');
+
+      if (!sliderV1 || !rayCanvas || !ttCanvas) return;
+
+      function update() {
+        const v1 = parseFloat(sliderV1.value);
+        let v2 = parseFloat(sliderV2.value);
+        if (v2 <= v1 + 50) {
+          v2 = v1 + 50;
+          sliderV2.value = v2;
+        }
+        const depth = parseFloat(sliderDepth.value);
+        const offset = parseFloat(sliderOffset.value);
+
+        // 更新標籤數值
+        valV1.textContent = `${v1} m/s`;
+        valV2.textContent = `${v2} m/s`;
+        valDepth.textContent = `${depth.toFixed(1)} m`;
+        valOffset.textContent = `${offset.toFixed(1)} m`;
+
+        // 物理公式即時計算
+        const sinCrit = v1 / v2;
+        const critRad = Math.asin(sinCrit);
+        const critDeg = (critRad * 180 / Math.PI).toFixed(1);
+
+        // 交叉支距: xc = 2 * h * sqrt((V2 + V1) / (V2 - V1))
+        const xc = (2 * depth * Math.sqrt((v2 + v1) / (v2 - v1))).toFixed(1);
+
+        // 臨界折射起始支距: x_crit = 2 * h * tan(critRad)
+        const xCrit = 2 * depth * Math.tan(critRad);
+
+        // 截距時間: Ti = 2 * h * sqrt(V2^2 - V1^2) / (V1 * V2) in ms
+        const Ti = (2 * depth * Math.sqrt(v2 * v2 - v1 * v1) / (v1 * v2) * 1000).toFixed(1);
+
+        lblCritAngle.textContent = `${critDeg}°`;
+        lblCrossover.textContent = `${xc} m`;
+        lblIntercept.textContent = `${Ti} ms`;
+
+        // 測試支距到時比較
+        const tDirect = (offset / v1 * 1000).toFixed(1);
+        let tRefr = null;
+        let winner = '直達波 (Direct Wave)';
+        let diff = 0;
+
+        if (offset >= xCrit) {
+          tRefr = ((offset / v2 * 1000) + parseFloat(Ti)).toFixed(1);
+          if (parseFloat(tRefr) < parseFloat(tDirect)) {
+            winner = '折射頭波 (Head Wave)';
+            diff = (parseFloat(tDirect) - parseFloat(tRefr)).toFixed(1);
+          } else {
+            diff = (parseFloat(tRefr) - parseFloat(tDirect)).toFixed(1);
+          }
+        }
+
+        // 即時文字評述
+        if (offset < xCrit) {
+          simOutputSummary.innerHTML = `
+            <span class="status-ico">ⓘ</span>
+            <span class="status-text">
+              於支距 <strong>${offset.toFixed(1)} m</strong> 處：小於臨界折射起始距離 (${xCrit.toFixed(1)} m)，<strong>僅有直達波抵達</strong>（走時 <strong>${tDirect} ms</strong>），尚未產生折射頭波。
+            </span>
+          `;
+        } else {
+          const ahead = parseFloat(tRefr) < parseFloat(tDirect) ? '早到' : '落後於直達波';
+          simOutputSummary.innerHTML = `
+            <span class="status-ico">ⓘ</span>
+            <span class="status-text">
+              於支距 <strong>${offset.toFixed(1)} m</strong> 處：直達波到時 <strong>${tDirect} ms</strong>，折射波到時 <strong>${tRefr} ms</strong>。折射波${ahead} <strong>${diff} ms</strong>，初達波判定為【<strong>${winner}</strong>】。
+            </span>
+          `;
+        }
+
+        // 繪製兩組 Canvas
+        drawRaypaths(rayCanvas, v1, v2, depth, offset, critRad, xCrit);
+        drawTravelTime(ttCanvas, v1, v2, depth, offset, xCrit, parseFloat(xc), parseFloat(Ti));
+      }
+
+      [sliderV1, sliderV2, sliderDepth, sliderOffset].forEach(slider => {
+        slider.addEventListener('input', update);
+      });
+
+      window.addEventListener('resize', update);
+      update();
+    }
+
+    function drawRaypaths(canvas, v1, v2, depth, offset, critRad, xCrit) {
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+
+      const w = rect.width;
+      const h = rect.height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      const padLeft = 40;
+      const padRight = 30;
+      const padTop = 35;
+      const groundY = padTop;
+      const maxMeters = 46;
+      const scaleX = (w - padLeft - padRight) / maxMeters;
+
+      const maxDepthM = 8;
+      const depthScale = (h - groundY - 30) / maxDepthM;
+      const interfaceY = groundY + depth * depthScale;
+
+      // 繪製地層
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+      ctx.fillRect(padLeft, groundY, w - padLeft - padRight, interfaceY - groundY);
+
+      ctx.fillStyle = 'rgba(10, 15, 30, 0.95)';
+      ctx.fillRect(padLeft, interfaceY, w - padLeft - padRight, h - interfaceY - 10);
+
+      ctx.strokeStyle = 'rgba(0, 240, 255, 0.6)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(padLeft, interfaceY);
+      ctx.lineTo(w - padRight, interfaceY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '10px JetBrains Mono';
+      ctx.fillText(`上層風化土 (V₁ = ${v1} m/s)`, padLeft + 10, groundY + (interfaceY - groundY) / 2 + 3);
+      ctx.fillText(`下層土石/基盤 (V₂ = ${v2} m/s)`, padLeft + 10, interfaceY + 22);
+      ctx.fillText(`界面深度 h = ${depth.toFixed(1)}m`, w - padRight - 110, interfaceY - 6);
+
+      // 地表線
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(padLeft, groundY);
+      ctx.lineTo(w - padRight, groundY);
+      ctx.stroke();
+
+      ctx.fillStyle = '#64748b';
+      ctx.font = '9px JetBrains Mono';
+      for (let m = 0; m <= maxMeters; m += 4) {
+        const xPos = padLeft + m * scaleX;
+        ctx.beginPath();
+        ctx.moveTo(xPos, groundY - 3);
+        ctx.lineTo(xPos, groundY + 3);
+        ctx.strokeStyle = '#334155';
+        ctx.stroke();
+        ctx.fillText(`${m}m`, xPos - 6, groundY - 8);
+      }
+
+      // 震源點 S(0m)
+      const sourceX = padLeft;
+      ctx.beginPath();
+      ctx.arc(sourceX, groundY, 5, 0, Math.PI * 2);
+      ctx.fillStyle = '#f59e0b';
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.fillStyle = '#f59e0b';
+      ctx.font = 'bold 9px JetBrains Mono';
+      ctx.fillText('S (0m)', sourceX - 12, groundY + 16);
+
+      // 檢驗受波器 R(x)
+      const recX = padLeft + offset * scaleX;
+      ctx.beginPath();
+      ctx.arc(recX, groundY, 5, 0, Math.PI * 2);
+      ctx.fillStyle = '#00f0ff';
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.fillStyle = '#00f0ff';
+      ctx.font = 'bold 9px JetBrains Mono';
+      ctx.fillText(`R (${offset}m)`, recX - 14, groundY + 16);
+
+      // 直達波射線
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(sourceX, groundY);
+      ctx.lineTo(recX, groundY);
+      ctx.stroke();
+
+      // 反射波射線
+      const midX = (sourceX + recX) / 2;
+      ctx.strokeStyle = '#c084fc';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(sourceX, groundY);
+      ctx.lineTo(midX, interfaceY);
+      ctx.lineTo(recX, groundY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // 臨界折射波射線
+      if (offset >= xCrit) {
+        const dXcrit = depth * Math.tan(critRad) * scaleX;
+        const hitInterfaceX = sourceX + dXcrit;
+        const exitInterfaceX = recX - dXcrit;
+
+        if (exitInterfaceX >= hitInterfaceX) {
+          ctx.strokeStyle = '#00f0ff';
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.moveTo(sourceX, groundY);
+          ctx.lineTo(hitInterfaceX, interfaceY);
+          ctx.lineTo(exitInterfaceX, interfaceY);
+          ctx.lineTo(recX, groundY);
+          ctx.stroke();
+
+          ctx.fillStyle = '#00f0ff';
+          const arrowCount = Math.floor((exitInterfaceX - hitInterfaceX) / 24);
+          for (let i = 1; i <= arrowCount; i++) {
+            const ax = hitInterfaceX + (i / (arrowCount + 1)) * (exitInterfaceX - hitInterfaceX);
+            ctx.beginPath();
+            ctx.moveTo(ax, interfaceY);
+            ctx.lineTo(ax - 3, interfaceY + 3);
+            ctx.lineTo(ax + 4, interfaceY);
+            ctx.lineTo(ax - 3, interfaceY - 3);
+            ctx.fill();
+          }
+        }
+      }
+    }
+
+    function drawTravelTime(canvas, v1, v2, depth, offset, xCrit, xc, Ti) {
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+
+      const w = rect.width;
+      const h = rect.height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      const padLeft = 45;
+      const padRight = 30;
+      const padBottom = 30;
+      const padTop = 20;
+
+      const maxMeters = 46;
+      const maxTimeMs = 120;
+
+      const scaleX = (w - padLeft - padRight) / maxMeters;
+      const scaleY = (h - padTop - padBottom) / maxTimeMs;
+
+      const originX = padLeft;
+      const originY = h - padBottom;
+
+      // 網格線
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+      ctx.lineWidth = 1;
+
+      for (let t = 20; t <= maxTimeMs; t += 20) {
+        const yPos = originY - t * scaleY;
+        ctx.beginPath();
+        ctx.moveTo(originX, yPos);
+        ctx.lineTo(w - padRight, yPos);
+        ctx.stroke();
+
+        ctx.fillStyle = '#64748b';
+        ctx.font = '9px JetBrains Mono';
+        ctx.fillText(`${t}ms`, 8, yPos + 3);
+      }
+
+      for (let m = 10; m <= maxMeters; m += 10) {
+        const xPos = originX + m * scaleX;
+        ctx.beginPath();
+        ctx.moveTo(xPos, padTop);
+        ctx.lineTo(xPos, originY);
+        ctx.stroke();
+
+        ctx.fillStyle = '#64748b';
+        ctx.font = '9px JetBrains Mono';
+        ctx.fillText(`${m}m`, xPos - 8, h - 12);
+      }
+
+      // 座標軸
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(originX, padTop);
+      ctx.lineTo(originX, originY);
+      ctx.lineTo(w - padRight, originY);
+      ctx.stroke();
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '10px JetBrains Mono';
+      ctx.fillText('走時 t (ms)', 8, padTop - 6);
+      ctx.fillText('支距 x (m)', w - padRight - 35, h - 12);
+
+      // 直達波直線
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(originX, originY);
+
+      const tAt46 = (maxMeters / v1) * 1000;
+      const endX = originX + maxMeters * scaleX;
+      const endY = originY - tAt46 * scaleY;
+      ctx.lineTo(endX, Math.max(padTop, endY));
+      ctx.stroke();
+
+      // 折射波直線
+      const startRefrX = originX + xCrit * scaleX;
+      const tAtCrit = (xCrit / v2) * 1000 + Ti;
+      const startRefrY = originY - tAtCrit * scaleY;
+
+      const tRefrEnd = (maxMeters / v2) * 1000 + Ti;
+      const endRefrX = originX + maxMeters * scaleX;
+      const endRefrY = originY - tRefrEnd * scaleY;
+
+      const interceptY = originY - Ti * scaleY;
+      ctx.strokeStyle = 'rgba(245, 158, 11, 0.4)';
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(originX, interceptY);
+      ctx.lineTo(startRefrX, startRefrY);
+      ctx.stroke();
+
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 2.5;
+      ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.moveTo(startRefrX, startRefrY);
+      ctx.lineTo(endRefrX, endRefrY);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(originX, interceptY, 4, 0, Math.PI * 2);
+      ctx.fillStyle = '#f59e0b';
+      ctx.fill();
+      ctx.fillText(`Ti=${Ti}ms`, originX + 6, interceptY - 4);
+
+      // 交叉點 xc
+      if (xc <= maxMeters) {
+        const xcPixelX = originX + xc * scaleX;
+        const tc = (xc / v1) * 1000;
+        const xcPixelY = originY - tc * scaleY;
+
+        ctx.beginPath();
+        ctx.arc(xcPixelX, xcPixelY, 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#00f0ff';
+        ctx.fill();
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        ctx.strokeStyle = 'rgba(0, 240, 255, 0.35)';
+        ctx.setLineDash([2, 2]);
+        ctx.beginPath();
+        ctx.moveTo(xcPixelX, xcPixelY);
+        ctx.lineTo(xcPixelX, originY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = '#00f0ff';
+        ctx.font = 'bold 9px JetBrains Mono';
+        ctx.fillText(`xc=${xc}m`, xcPixelX + 4, xcPixelY - 6);
+      }
+
+      // 當前受波點 Offset
+      const curOffsetPixelX = originX + offset * scaleX;
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 2]);
+      ctx.beginPath();
+      ctx.moveTo(curOffsetPixelX, padTop);
+      ctx.lineTo(curOffsetPixelX, originY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      const tDirCur = (offset / v1) * 1000;
+      const curDirY = originY - tDirCur * scaleY;
+      ctx.beginPath();
+      ctx.arc(curOffsetPixelX, curDirY, 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = '#38bdf8';
+      ctx.fill();
+
+      if (offset >= xCrit) {
+        const tRefrCur = (offset / v2) * 1000 + Ti;
+        const curRefrY = originY - tRefrCur * scaleY;
+        ctx.beginPath();
+        ctx.arc(curOffsetPixelX, curRefrY, 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = '#f59e0b';
+        ctx.fill();
+      }
+    }
+
+    /* 3. 12 炮遙測矩陣資料與互動 */
+    const fieldShots = [
+      { id: 1, ffid: 101, x: 0, stack: 15, time: "11:13:29", range: "0 ~ +46 m", snr: "51.1 dB (近)", quality: "high", note: "第一炮基準炮，15次高強度疊加。近支距微震訊號波形銳利，定義測線北端零點基準。" },
+      { id: 2, ffid: 102, x: 4, stack: 14, time: "11:17:28", range: "-4 ~ +42 m", snr: "55.7 dB (近)", quality: "high", note: "第二炮，完成第二組 source-receiver 幾何。近支距訊噪比超過 55 dB。" },
+      { id: 3, ffid: 103, x: 8, stack: 14, time: "11:19:54", range: "-8 ~ +38 m", snr: "50.5 dB (近)", quality: "high", note: "第三炮，開始進入折射波先到之臨界區間（8m處初達波視速度穩定維持 547 m/s）。" },
+      { id: 4, ffid: 104, x: 12, stack: 15, time: "11:21:48", range: "-12 ~ +34 m", snr: "41.4 dB (近)", quality: "high", note: "第四炮，15次滿疊加。雙向支距幾何對稱性提升，有效壓抑微動雜訊。" },
+      { id: 5, ffid: 105, x: 16, stack: 13, time: "11:23:54", range: "-16 ~ +30 m", snr: "38.1 dB (近)", quality: "high", note: "第五炮，測線前段與中段之過渡節點，初達波走時呈現平緩之高速折射趨勢。" },
+      { id: 6, ffid: 106, x: 20, stack: 9, time: "11:25:33", range: "-20 ~ +26 m", snr: "36.8 dB (近)", quality: "mid", note: "第六炮，疊加次數降至 9 次。波形中可見背景微動微幅上升，但初達波仍具備可信度。" },
+      { id: 7, ffid: 107, x: 24, stack: 11, time: "11:29:12", range: "-24 ~ +22 m", snr: "38.1 dB (近)", quality: "high", note: "第七炮，測線幾何正中央 (24m)，形成完全雙向對稱之展開排列。" },
+      { id: 8, ffid: 108, x: 28, stack: 3, time: "11:30:15", range: "-28 ~ +18 m", snr: "28.0 dB (全線最低)", quality: "low", note: "⚠️ 品質警示：本炮僅敲擊疊加 3 次（全線最少）。訊噪比明顯受抑，直接印證垂直疊加（Vertical Stacking）對抗雜訊之絕對必要性。" },
+      { id: 9, ffid: 109, x: 32, stack: 11, time: "11:32:53", range: "-32 ~ +14 m", snr: "45.0 dB (近)", quality: "high", note: "第九炮，恢復 11 次疊加，訊雜比顯著回升，中段折射走時維持高度一致。" },
+      { id: 10, ffid: 110, x: 36, stack: 13, time: "11:34:39", range: "-36 ~ +10 m", snr: "63.7 dB (近)", quality: "high", note: "第十炮，近支距能量充沛（SNR 達 63.7 dB），高靈敏度檢波器成功捕獲清晰 P 波初達。" },
+      { id: 11, ffid: 111, x: 40, stack: 9, time: "11:36:16", range: "-40 ~ +6 m", snr: "57.2 dB (近)", quality: "high", note: "第十一炮，測線南端收斂炮點，提供南向北傳播之對稱檢核資料。" },
+      { id: 12, ffid: 112, x: 44, stack: 14, time: "11:38:01", range: "-44 ~ +2 m", snr: "56.8 dB (近)", quality: "high", note: "第十二炮，測線終端逆向炮。與 Shot 1 構成全線 44m 之完整互換時間配對（走時差僅 1.5 ms）。" }
+    ];
+
+    function initShotMatrix() {
+      const container = document.getElementById('shotBtnContainer');
+      const detailCard = document.getElementById('shotDetailCard');
+      if (!container || !detailCard) return;
+
+      container.innerHTML = '';
+
+      fieldShots.forEach((shot, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `btn-shot ${idx === 0 ? 'active' : ''}`;
+        btn.innerHTML = `
+          <span class="shot-id">S${shot.id}</span>
+          <span class="shot-pos">${shot.x}m</span>
+        `;
+
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.btn-shot').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          renderShotDetail(shot);
+        });
+
+        container.appendChild(btn);
+      });
+
+      renderShotDetail(fieldShots[0]);
+    }
+
+    function renderShotDetail(shot) {
+      const detailCard = document.getElementById('shotDetailCard');
+      if (!detailCard) return;
+
+      const isLowStack = shot.stack <= 3;
+      const statusBadge = isLowStack 
+        ? '<span class="badge-danger">品質警示 (疊加過低)</span>' 
+        : '<span class="badge-success">品質優良 (NOMINAL)</span>';
+
+      detailCard.innerHTML = `
+        <div class="sd-meta-col">
+          <div class="sd-meta-row">
+            <span class="sd-label">SHOT ID / FFID</span>
+            <span class="sd-val">Shot ${shot.id} (FFID: ${shot.ffid})</span>
+          </div>
+          <div class="sd-meta-row">
+            <span class="sd-label">炸點空間座標</span>
+            <span class="sd-val">x = ${shot.x}.0 公尺</span>
+          </div>
+          <div class="sd-meta-row">
+            <span class="sd-label">垂直疊加次數</span>
+            <span class="sd-val" style="color: ${isLowStack ? 'var(--tech-rose)' : 'var(--tech-cyan)'}">${shot.stack} 次</span>
+          </div>
+          <div class="sd-meta-row">
+            <span class="sd-label">支距涵蓋範圍</span>
+            <span class="sd-val">${shot.range}</span>
+          </div>
+          <div class="sd-meta-row">
+            <span class="sd-label">記錄施測時間</span>
+            <span class="sd-val">${shot.time}</span>
+          </div>
+          <div class="sd-meta-row">
+            <span class="sd-label">品管判定</span>
+            <span class="sd-val">${statusBadge}</span>
+          </div>
+        </div>
+        <div class="sd-info-col">
+          <h4>炮點遙測日誌評述</h4>
+          <p>${shot.note}</p>
+          <div class="callout-box" style="margin-top: 14px; font-size: 0.84rem;">
+            <strong>幾何對稱性：</strong> 本炮 24 通道記錄已完整保存於 SEG-Y 與 ALIAS 二進位檔案中，逐道相關係數達 1.000000。
+          </div>
+        </div>
+      `;
+    }
+
+    /* 4. 資料分析頁籤切換 */
+    function initFindingsTabs() {
+      const tabs = document.querySelectorAll('.f-tab');
+      const panels = document.querySelectorAll('.finding-panel');
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const targetId = tab.getAttribute('data-target');
+
+          tabs.forEach(t => t.classList.remove('active'));
+          panels.forEach(p => p.classList.remove('active'));
+
+          tab.classList.add('active');
+          const targetPanel = document.getElementById(targetId);
+          if (targetPanel) targetPanel.classList.add('active');
+        });
+      });
+    }
+
+    /* 5. Lightbox Modal */
+    window.openPhotoModal = function(imageSrc, caption, tag = 'INSPECTION HUD') {
+      const modal = document.getElementById('photoModal');
+      const modalImg = document.getElementById('modalImg');
+      const modalCaption = document.getElementById('modalCaption');
+      const modalTag = document.getElementById('modalTag');
+
+      if (!modal || !modalImg || !modalCaption) return;
+
+      modalImg.src = imageSrc;
+      modalCaption.textContent = caption;
+      if (modalTag) modalTag.textContent = tag;
+
+      modal.classList.add('active');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    };
+
+    window.closePhotoModal = function() {
+      const modal = document.getElementById('photoModal');
+      if (!modal) return;
+
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    };
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closePhotoModal();
+    });
+  </script>
+</body>
+
+</html>
